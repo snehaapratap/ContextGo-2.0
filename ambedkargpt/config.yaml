@@ -1,0 +1,42 @@
+models:
+  embedding_model: "all-MiniLM-L6-v2"  # Sentence transformer model
+  llm_model: "llama3.2:latest"  # Local LLM via Ollama
+  ner_model: "en_core_web_sm"  # spaCy NER model
+
+chunking:
+  buffer_size: 5  # Number of adjacent sentences for context (b in paper)
+  similarity_threshold: 0.5  # Cosine distance threshold (τ in Equation 1)
+  max_tokens: 1024  # Maximum tokens per chunk
+  overlap_tokens: 128  # Overlap between sub-chunks (Equation 2)
+  
+knowledge_graph:
+  community_algorithm: "leiden"  # Options: leiden, louvain
+  min_community_size: 2
+  resolution: 1.0  # Resolution parameter for community detection
+  
+retrieval:
+  local:
+    entity_threshold: 0.3  # τ_e: similarity threshold for entities
+    document_threshold: 0.3  # τ_d: similarity threshold for documents
+    top_k: 5  # Number of results to retrieve
+    
+  global:
+    top_k_communities: 3  # Top-K communities to retrieve
+    top_k_points: 5  # Top-K points from communities
+    
+generation:
+  max_context_length: 4096
+  temperature: 0.7
+  max_tokens: 1024
+  
+paths:
+  data_dir: "data"
+  processed_dir: "data/processed"
+  chunks_file: "data/processed/chunks.json"
+  graph_file: "data/processed/knowledge_graph.pkl"
+  embeddings_file: "data/processed/embeddings.pkl"
+  
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
